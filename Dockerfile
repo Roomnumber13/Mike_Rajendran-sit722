@@ -12,7 +12,7 @@ COPY /book_catalog/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code into the container
-COPY ./book_catalog ./book_catalog
+COPY book_catalog/ .
 
 # Set environment variables for the Postgres connection
 ENV POSTGRES_HOST=dpg-cr7h22i3esus7389oj50-a.singapore-postgres.render.com
@@ -25,4 +25,4 @@ ENV POSTGRES_PASSWORD=xyOUKEjlrs0JAYdf9BqZDrAIg1ggmPZI
 EXPOSE 8000
 
 # Set the command to run the application
-CMD ["python", "book_catalog/main.py"]
+CMD ["python", "book_catalog.main:app"]
