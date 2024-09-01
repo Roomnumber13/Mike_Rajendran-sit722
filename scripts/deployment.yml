@@ -2,9 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: book-catalog-deployment
-  labels:
-    app: book-catalog
+  name: book-catalog
 spec:
   replicas: 1
   selector:
@@ -17,17 +15,22 @@ spec:
     spec:
       containers:
         - name: book-catalog
-          image: book-catalog:latest  # Update this with your image name if you push it to a registry
+          image: book-service:1  # Update this with your image name if you push it to a registry
           ports:
             - containerPort: 8000
           env:
-            - name: POSTGRES_HOST
-              value: "dpg-cr7h22i3esus7389oj50-a.singapore-postgres.render.com"
-            - name: POSTGRES_PORT
-              value: "5432"
-            - name: POSTGRES_DB
-              value: "sit722_part2_zdo7"
-            - name: POSTGRES_USER
-              value: "sit722_part2_zdo7_user"
-            - name: POSTGRES_PASSWORD
-              value: "xyOUKEjlrs0JAYdf9BqZDrAIg1ggmPZI"
+            - name: DATABASE_URL
+              value: "postgresql://sit722_part2_zdo7_user:xyOUKEjlrs0JAYdf9BqZDrAIg1ggmPZI@dpg-cr7h22i3esus7389oj50-a.singapore-postgres.render.com/sit722_part2_zdo7"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: book-catalog-service
+spec:
+  selector:
+    app: book-catalog
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+  type: NodePort
